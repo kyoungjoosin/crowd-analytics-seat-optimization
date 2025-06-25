@@ -1,0 +1,100 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "98848904-c64e-4f0e-bea9-45c9f76ed1e1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import streamlit as st\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import pickle\n",
+    "from datetime import datetime\n",
+    "\n",
+    "# 1. 저장된 모델 불러오기\n",
+    "with open('rf_model.pkl', 'rb') as f:\n",
+    "    model = pickle.load(f)\n",
+    "\n",
+    "# 2. 사용자 입력 받기\n",
+    "date_input = st.date_input(\"예측할 날짜 선택\")\n",
+    "hour_input = st.number_input(\"예측할 시간 입력 (0~23)\", min_value=0, max_value=23, value=13)\n",
+    "\n",
+    "# 3. 입력값 기반 피처 생성 함수 (간단 예)\n",
+    "def create_features(date, hour):\n",
+    "    df = pd.DataFrame({'date': [date], 'hour': [hour]})\n",
+    "\n",
+    "    df['weekday'] = df['date'].dt.dayofweek + 1  # 월=1, ... 일=7\n",
+    "    weekday_map = {1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday',7:'Sunday'}\n",
+    "    df['weekday_name'] = df['weekday'].map(weekday_map)\n",
+    "\n",
+    "    df['is_weekend'] = df['weekday_name'].isin(['Saturday', 'Sunday']).astype(int)\n",
+    "\n",
+    "    public_holidays = ['2025-05-01', '2025-05-05', '2025-05-06']\n",
+    "    df['is_holiday'] = df['date'].astype(str).isin(public_holidays).astype(int)\n",
+    "\n",
+    "    # 시간 사이클릭 인코딩\n",
+    "    df['hour_sin'] = np.sin(2 * np.pi * hour / 24)\n",
+    "    df['hour_cos'] = np.cos(2 * np.pi * hour / 24)\n",
+    "\n",
+    "    # 출퇴근, 점심시간 플래그\n",
+    "    df['is_morning_rush'] = ((hour >= 7) & (hour <= 9)).astype(int)\n",
+    "    df['is_lunch_time'] = ((hour >= 12) & (hour <= 13)).astype(int)\n",
+    "    df['is_evening_rush'] = ((hour >= 17) & (hour <= 19)).astype(int)\n",
+    "\n",
+    "    # 기타 필요한 피처 (데모용 임의 값)\n",
+    "    df['visitor_count'] = 10\n",
+    "    df['concurrent_wait_count'] = 5\n",
+    "    df['rolling_wait_mean'] = 2.5\n",
+    "    df['prev_wait'] = 2.5\n",
+    "    df['wait_diff'] = 0\n",
+    "\n",
+    "    # 범주형 변수 (예시)\n",
+    "    df['person_type'] = 'type1'\n",
+    "    df['age_group'] = '30-40'\n",
+    "    df['gender'] = 'F'\n",
+    "\n",
+    "    # One-hot 인코딩\n",
+    "    df = pd.get_dummies(df)\n",
+    "\n",
+    "    return df\n",
+    "\n",
+    "# 4. 예측 버튼 및 출력\n",
+    "if st.button('대기시간 예측'):\n",
+    "    features = create_features(pd.to_datetime(date_input), hour_input)\n",
+    "    pred = model.predict(features)[0]\n",
+    "    st.write(f\"예상 대기시간: {pred:.2f}분\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "49354e8d-1e84-4ea3-b12f-9813b73231f8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
