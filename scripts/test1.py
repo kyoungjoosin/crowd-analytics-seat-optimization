@@ -131,8 +131,8 @@ wait_log_df = pd.DataFrame(wait_log, columns=["person_id", "start_time", "end_ti
 anomaly_log_df = pd.DataFrame(anomaly_log, columns=["person_id", "timestamp", "zone", "type", "severity"])
 
 # 예: 저장
-people_log_df.to_csv("C:/Users/KyoungJoo/OneDrive/바탕 화면/취업/이직/people_log.csv", index=False)
-seat_status_df.to_csv("C:/Users/KyoungJoo/OneDrive/바탕 화면/취업/이직/seat_status.csv", index=False)
-wait_log_df.to_csv("C:/Users/KyoungJoo/OneDrive/바탕 화면/취업/이직/wait_log.csv", index=False)
-anomaly_log_df.to_csv("C:/Users/KyoungJoo/OneDrive/바탕 화면/취업/이직/anomaly_log.csv", index=False)
-seat_info_df.to_csv("C:/Users/KyoungJoo/OneDrive/바탕 화면/취업/이직/seat_info.csv", index=False)
+people_log_df.to_csv("C:/Users/people_log.csv", index=False)
+seat_status_df.to_csv("C:/Users/seat_status.csv", index=False)
+wait_log_df.to_csv("C:/Users/wait_log.csv", index=False)
+anomaly_log_df.to_csv("C:/Users/anomaly_log.csv", index=False)
+seat_info_df.to_csv("C:/Users/seat_info.csv", index=False)
