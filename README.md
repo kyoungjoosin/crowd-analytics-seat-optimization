@@ -1,85 +1,95 @@
-# 카페 혼잡도 분석 및 좌석 최적화 시스템
+# 📊 카페 혼잡도 분석 및 좌석 최적화 시스템
 
-> **카페 방문 로그 데이터를 기반으로, 요일/시간대별 혼잡도 분석 및 대기시간 예측 모델을 통해 운영 효율을 높이는 분석 프로젝트입니다.**
+> CCTV 기반 방문자 로그 데이터를 분석하여  
+> 요일·시간대별 혼잡도, 대기시간 예측 모델, 운영 전략 시뮬레이션을 통해  
+> **매장 운영 효율을 향상**시키는 데이터 분석 프로젝트입니다.
 
 ---
 
 ## 🔍 프로젝트 개요
 
-- **목표**: 요일·시간대별 방문자 흐름 및 대기시간 데이터를 분석해, 혼잡도를 파악하고 좌석 배치를 최적화
-- **데이터**: CCTV 기반 방문 로그 (`people_log`), 대기시간 로그 (`wait_log`)  
-- **활용 기술**: Python (pandas, sklearn, matplotlib, seaborn 등), MySQL, Jupyter Notebook
+- **목표**: 혼잡도 및 대기시간 분석을 통해 효율적인 좌석 운영 전략 제안
+- **분석 대상**: 카페 방문 로그 (`people_log`) + 대기시간 로그 (`wait_log`)
+- **활용 기술**: Python (pandas, scikit-learn, seaborn, XGBoost), MySQL, Streamlit
 
 ---
 
-## 📊 분석 흐름
+## 🧭 분석 흐름
 
-1. **데이터 수집 및 정제**
-   - MySQL에서 `people_log`, `wait_log` 테이블 조인
-   - 요일, 시간대, 인구 통계 정보(연령/성별/이용유형) 가공
+1. **데이터 전처리**
+   - MySQL 기반 `people_log`, `wait_log` 조인
+   - 요일/시간대/인구통계 기반 파생 피처 생성
 
-2. **탐색적 데이터 분석 (EDA)**
-   - 요일/시간대별 방문자 수 시각화 (히트맵)
-   - 시간대별 평균 대기시간 분석
-   - 테이크아웃 vs 매장 이용 비율 비교
-   - 혼잡도 구간화 (`Low / Mid / High`) 및 시각화
+2. **탐색적 분석 (EDA)**
+   - 요일×시간대별 방문자 분포 시각화
+   - 혼잡도 구간화 (분위수 기준) 및 히트맵 작성
+   - 고객 체류 유형별 행동 분석
 
-3. **대기시간 예측 모델링**
-   - 주요 피처: 요일, 시간대, 성별, 연령대, person_type 등
+3. **대기시간 예측 모델**
    - 모델: Random Forest Regressor
-   - 평가 지표: MAE / RMSE / R² Score
+   - 주요 피처: 시간대, 혼잡도, 이탈자 수 등
+   - 성능: R² = 0.996, RMSE = 0.29분
 
-4. **운영 전략 제안**
-   - 혼잡 시간대 좌석 재배치 or 체류시간 제한 정책 시뮬레이션 *(추가 예정)*
+4. **전략 시뮬레이션**
+   - 좌석 구성 변경, 체류시간 제한 정책 효과 비교
+   - 혼잡 시간대 기준 전략별 성과 수치화
+
+5. **Streamlit 앱 배포**
+   - 날짜·시간 입력 시 실시간 대기시간 예측
 
 ---
 
-## 🧪 결과 요약
+## 🧪 주요 결과 요약
 
-- 대기시간 예측 R² Score: **0.98**
-- 특정 요일/시간대에 혼잡도 집중 현상 확인
-- 예측값 기반으로 시간대별 운영 전략 수립 가능
+| 항목 | 결과 |
+|------|------|
+| 📈 대기시간 예측 성능 | RMSE 0.29 / R² 0.996 |
+| 🧠 인사이트 | 체류시간 제한 정책이 가장 효과적 |
+| 🖥️ 운영 도구화 | Streamlit 기반 실시간 예측 앱 구현 |
 
 ---
 
 ## 🗂️ 디렉토리 구조
 
-crowd-analytics-seat-optimization/
-├── README.md
-├── requirements.txt
-├── data/
-│   └── sample_schema_description.md
-├── notebooks/
-│   ├── 01_eda.ipynb
-│   ├── 02_feature_engineering.ipynb
-│   └── 03_model_training.ipynb
-├── scripts/
-│   ├── utils.py
-│   └── model_pipeline.py
-└── results/
-    ├── heatmaps/
-    └── metrics/
-
+- `crowd-analytics-seat-optimization/`
+  - `README.md`
+  - `requirements.txt`
+  - `data/`  
+    └─ 샘플 테이블 스키마 및 데이터 설명
+  - `notebooks/`  
+    ├─ `01_eda.ipynb`  
+    ├─ `02_feature_engineering.ipynb`  
+    └─ `03_model_training.ipynb`
+  - `scripts/`  
+    ├─ `utils.py`  
+    └─ `model_pipeline.py`
+  - `app/`  
+    └─ `streamlit_app.py`
+  - `figures/`  
+    └─ 분석 결과 시각화 이미지
+  - `docs/`  
+    └─ 부록 및 전략 요약 정리
 
 ---
 
 ## ⚙️ 사용 기술
 
-- **Python**: pandas, seaborn, matplotlib, scikit-learn
-- **DB**: MySQL
+- **Python**: pandas, seaborn, matplotlib, scikit-learn, XGBoost
+- **Database**: MySQL
 - **IDE**: Jupyter Notebook
-- **배포 예정**: Streamlit (대기시간 실시간 예측 앱)
+- **배포 도구**: Streamlit
 
 ---
 
-## 📌 프로젝트 보기
+## 🔗 관련 링크
 
-> 깃허브 주소: [https://github.com/kyoungjoosin/crowd-analytics-seat-optimization](https://github.com/kyoungjoosin/crowd-analytics-seat-optimization)
+- 📁 GitHub Repo: [github.com/kyoungjoosin/crowd-analytics-seat-optimization](https://github.com/kyoungjoosin/crowd-analytics-seat-optimization)
+- 📄 포트폴리오 Notion: [Project 페이지 보기](https://www.notion.so/Project-211a8d49f8408035b03bd0134b743dd6)
 
 ---
 
 ## 🙋‍♀️ 작성자
 
-- **Name**: Shin KyoungJoo 
-- **Contact**: kyoungjoosin@gmail.com
-
+- **Name**: Shin KyoungJoo
+- **Email**: kyoungjoosin@gmail.com
+- **GitHub**: [@kyoungjoosin](https://github.com/kyoungjoosin)
