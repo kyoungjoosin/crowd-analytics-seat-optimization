@@ -34,7 +34,7 @@
    - 좌석 구성 변경, 체류시간 제한 정책 효과 비교
    - 혼잡 시간대 기준 전략별 성과 수치화
 
-5. **Streamlit 앱 배포**
+5. **Streamlit 앱 구현**
    - 날짜·시간 입력 시 실시간 대기시간 예측
 
 ---
@@ -46,29 +46,6 @@
 | 📈 대기시간 예측 성능 | RMSE 0.29 / R² 0.996 |
 | 🧠 인사이트 | 체류시간 제한 정책이 가장 효과적 |
 | 🖥️ 운영 도구화 | Streamlit 기반 실시간 예측 앱 구현 |
-
----
-
-## 🗂️ 디렉토리 구조
-
-- `crowd-analytics-seat-optimization/`
-  - `README.md`
-  - `requirements.txt`
-  - `data/`  
-    └─ 샘플 테이블 스키마 및 데이터 설명
-  - `notebooks/`  
-    ├─ `01_eda.ipynb`  
-    ├─ `02_feature_engineering.ipynb`  
-    └─ `03_model_training.ipynb`
-  - `scripts/`  
-    ├─ `utils.py`  
-    └─ `model_pipeline.py`
-  - `app/`  
-    └─ `streamlit_app.py`
-  - `figures/`  
-    └─ 분석 결과 시각화 이미지
-  - `docs/`  
-    └─ 부록 및 전략 요약 정리
 
 ---
 
