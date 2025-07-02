@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 
 # DB 연결 설정
-engine = create_engine(f'mysql+pymysql://root:rudwn0568!@localhost/Project1')
+engine = create_engine(f'mysql+pymysql://root:passwd@localhost/Project1')
 
 # 모델 로드
 with open('rf_model.pkl', 'rb') as f:
