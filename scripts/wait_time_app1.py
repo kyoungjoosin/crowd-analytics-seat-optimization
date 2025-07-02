@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from datetime import datetime
 
 # 1. DB 연결 설정 (본인 DB 정보로 변경)
-engine = create_engine('mysql+pymysql://root:rudwn0568!@localhost/Project1')
+engine = create_engine('mysql+pymysql://root:passwd@localhost/Project1')
 
 # 2. 저장된 모델 불러오기
 with open('rf_model.pkl', 'rb') as f:
